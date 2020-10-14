@@ -1,0 +1,35 @@
+version: '3'
+
+services: 
+    posgres:
+        image: postgres
+        ports: 
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=a
+            - POSTGRES_DB=job-data    
+        volumes: 
+            - job-data:/var/lib/postgresql/data
+        container_name: job-postgres
+    
+    rabbitmq:    
+        image: rabbitmq:3-management
+        hostname: job-rabbitmq
+        ports:
+            - 5672:5672
+            - 15672:15672
+        environment: 
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+            - RABBITMQ_NODENAME=rabbitnode@localhost
+            - RABBITMQ_USER=rabbit
+            - RABBITMQ_PASSWORD=rabbit    
+        volumes:    
+            - job-rabbitmq:/etc/rabbitmq/
+            - job-rabbitmq:/var/lib/rabbitmq/    
+        container_name: job-rabbitmq
+
+volumes:
+    job-data:
+    job-rabbitmq:
